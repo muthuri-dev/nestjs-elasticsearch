@@ -32,7 +32,7 @@ import * as fs from 'fs';
         synchronize: false,
         extra: {
           ssl: {
-            ca: fs.readFileSync('./isrgrootx1.pem'),
+            ca: fs.readFileSync(join(__dirname, '../isrgrootx1.pem')),
           },
         },
       }),
@@ -42,6 +42,10 @@ import * as fs from 'fs';
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
         node: configService.getOrThrow<string>('ELASTIC_SEARCH_URL'),
+        auth: {
+          username: configService.get('ELASTICSEARCH_USERNAME'),
+          password: configService.get('ELASTICSEARCH_PASSWORD'),
+        },
       }),
     }),
     UsersModule,
